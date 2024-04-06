@@ -1,0 +1,26 @@
+{% extends 'master.html' %}
+{% block body %}
+
+<div class="thank-you-area">
+    <div class="container">
+        <div class="">
+            <div class="col-md-12">
+                <div class="content-404 text-center">
+                    <div class="img_cmpted"><img src="static/images/home/cmpted_logo.png" alt=""></div>
+                 
+                        <h2><b>Thank you</b> for ordering in our store. You will receive a confirmation
+                            email shortly.</h2>
+                        <h2><a href="{% url 'index' %}">Continue Buying </a></h2>
+
+                        <div class="main_quickorder text-align-center" style="margin-bottom: 15px;">
+                            <h3 class="title">Call Us for Quick Order</h3>
+                            <div class="cntct typewriter-effect"><span class="call_desk"><a href="tel:+91 8830842089" id="typewriter_num">+91 883 084 2089</a></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+{% endblock %}

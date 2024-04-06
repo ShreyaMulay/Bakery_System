@@ -1,0 +1,75 @@
+{% extends 'master.html' %}
+{% block body %}
+
+
+<section id="cart_items">
+    <div class="container">
+        <!-- <h3>Your Order Items</h3> -->
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li class="active">Your Order</li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="image">Item</td>
+                        <td class="description"></td>
+                        <td class="price">Price</td>
+                        <td class="quantity">Quantity</td>
+                        <td class="total">Total</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in order %}
+                    <tr>
+                        <td class="cart_product">
+                            <a href=""><img src="../../{{i.image}}" alt="" style="height: 100px;
+                                width: 100px;object-fit: cover;"></a>
+                        </td>
+                        <td class="cart_description">
+                            <h4><a href="">{{i.product}}</a></h4>
+                        </td>
+                        <td class="cart_price">
+                            <p>₹{{i.price}}</p>
+                        </td>
+                        <td class="cart_price">
+                            <div class="cart_quantity_button">
+                               <p>{{i.quantity}}</p>
+                            </div>
+                        </td>
+                        <td class="cart_total">
+                            <p class="cart_total_price">₹{{i.total}}</p>
+                        </td>
+                        <!-- <td class="cart_delete"  data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo">
+                            <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+                        </td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section> <!--/#cart_items-->
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cancel Your Order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <span>If you want to cancel your order, please contact the administrator : 8830842089</span>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

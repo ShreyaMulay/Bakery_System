@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+
+<body>
+
+    <div class="your-order-area" style="background-color: #d6d6d5;margin: 0;min-width: 100%;padding: 0;width: 100%;">
+        <!-- <h1 style="text-align: center;">Your Order Receipt</h1> -->
+        <h1 style="color:#000;line-height:38px;margin-left:10px;"> Thanks for buying, {{name}} </h1>
+
+        <h2 style="color:#000;line-height:26px;;margin-left:10px;">
+        We hope you will enjoy your delicious food.
+        </h2>
+        
+        <table class="table" style="width:100%; border: 1px solid black;font-size:20px;margin: 0;min-width: 100%;padding: 0;">
+            <thead class="thead-light">
+                <tr>
+                    <th style=" border: 1px solid black;">Product </th>
+                    <th style=" border: 1px solid black;">Quantity </th>
+                    <th style=" border: 1px solid black;">Price </th>
+                    <th style=" border: 1px solid black;">Total </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                
+                    <td style="text-align: center;border: 1px solid black;">
+                        {% for data in product %}
+                            {{ data }}
+                        {% endfor %}
+                    </td>
+
+                    <td style="text-align: center;border: 1px solid black;">
+                        {% for data in quantity %}
+                            {{ data }}
+                        {% endfor %}
+                    </td>
+
+                
+                    <td style="text-align: center;border: 1px solid black;">
+                        {% for data in price %}
+                            {{ data }}
+                        {% endfor %}
+                    </td>
+
+                    <td style="text-align: center;border: 1px solid black;">
+                        {% for data in total %}
+                            {{data}}
+                        {% endfor %}
+                    </td>
+                
+                </tr>
+            <tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>

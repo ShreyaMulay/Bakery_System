@@ -1,0 +1,144 @@
+
+{% extends 'master.html' %}
+{% block body %}
+
+<section id="cart_items">
+    <div class="container">
+        <!-- <h3>Your Order</h3> -->
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li class="active">Your Order </li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            <table class="table table-condensed">
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="image">Item</td>
+                        <td class="description"></td>
+                        <td class="price">Price</td>
+                        <td class="quantity">Quantity</td>
+                        <td class="total">Total</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for key,value in request.session.cart.items %}
+                <!-- <a href="{% url 'cart_clear' %}">Clear Cart</a> -->
+
+                    <tr>
+                        <td class="cart_product">
+                            <a href=""><img src="../../{{value.image}}" alt="" style="height: 100px;width: 100px;object-fit: cover;"></a>
+                        </td>
+                        <td class="cart_description">
+                            <h4><a href="">{{value.name}}</a></h4>
+                        </td>
+                        <td class="cart_price">
+                            <p> ₹ {{value.price}}</p>
+                        </td>
+                        <td class="cart_quantity">
+                            <div class="cart_quantity_button">
+                                <a>{{value.quantity}}</a>
+                            </div>
+                        </td>
+                        <td class="cart_total">
+                            <p class="cart_total_price">₹  {{ value.price }} *{{value.quantity }}</p>
+                        </td>
+                       
+                    </tr>
+                {% endfor %}
+                </tbody>
+                
+                <tfoot>
+                    <td>
+                    </td>
+
+                    <td>
+                    </td>
+
+                    {% if not request.session.cart|length == 0 %}
+
+                      <td>
+                        <hr>
+                        <h4 >Total :</h4>
+                      </td>
+                    
+                    {% else %}
+
+                    <td class="text-center">
+                      <h4>Your Cart is Empty</h4>
+                    </td>
+
+                    {% endif %}
+                   
+                    <td>
+                    </td>
+
+                    {% if not request.session.cart|length == 0 %}
+                      <td>
+                          <hr>
+                          <h3>₹  {{cart_total_amount}}</h3>
+                      </td>
+                    {% endif %}
+
+                </tfoot>
+            </table>
+        </div>
+        
+          <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="float:right"></button> -->
+
+        {% if paymentmode == 'Online' %}
+        
+            <a id="rzp-button1">
+                <button type="button" class="btn btn-primary" style="float:right;margin-top:0;margin-bottom: 15px;">Place Order </button>
+            </a>
+
+        {% elif  paymentmode == 'Offline' %}
+
+
+            <a href="{% url 'success' %}" class="btn btn-primary" style="float:right;margin-top:0;margin-bottom: 15px;">Place Order </a>
+
+          
+        {% endif %}
+            
+
+    </div>
+</section> 
+
+<form action="{% url 'success' %}" method="post">
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_RIpjeYub2niDsp", 
+    "amount": "50000", 
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": "{{order_id}}",
+    "callback_url": "http://127.0.0.1:8000/success",
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+</form>
+{% endblock %}
