@@ -1,7 +1,9 @@
 # Bakery_System
 
 pip install django
+
 pip install pillow
+
 pip install razorpay
 
 
