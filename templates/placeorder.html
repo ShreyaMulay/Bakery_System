@@ -26,8 +26,6 @@
                 <tbody>
 
                 {% for key,value in request.session.cart.items %}
-                <!-- <a href="{% url 'cart_clear' %}">Clear Cart</a> -->
-
                     <tr>
                         <td class="cart_product">
                             <a href=""><img src="../../{{value.image}}" alt="" style="height: 100px;width: 100px;object-fit: cover;"></a>
@@ -107,14 +105,13 @@
     </div>
 </section> 
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <form action="{% url 'success' %}" method="post">
 
-
-
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 var options = {
-    "key": "rzp_test_RIpjeYub2niDsp", 
+    "key": "rzp_test_AliNN9561P1a9o", 
     "amount": "50000", 
     "currency": "INR",
     "name": "Acme Corp",
@@ -123,17 +120,18 @@ var options = {
     "order_id": "{{order_id}}",
     "callback_url": "http://127.0.0.1:8000/success",
     "prefill": {
-        "name": "Gaurav Kumar",
-        "email": "gaurav.kumar@example.com",
-        "contact": "9000090000"
+        "name": "{{name}}",
+        "email": "{{email}}",
+        "contact": "{{phone}}"
     },
     "notes": {
-        "address": "Razorpay Corporate Office"
+        "address": "{{address}}",
     },
     "theme": {
         "color": "#3399cc"
     }
 };
+console.log("options : ",options);
 var rzp1 = new Razorpay(options);
 document.getElementById('rzp-button1').onclick = function(e){
     rzp1.open();

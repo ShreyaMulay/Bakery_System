@@ -54,8 +54,7 @@ def signup(req):
                 email = form.cleaned_data['email'],
             )
             
-            # print("::user.email from views",new_user.email)
-            send_mail("Welcome to Monginis!","Hi " + new_user.username + " — Thanks for signing up!  \nUsername :  " + form.cleaned_data['username'] + " \nPassword : " + form.cleaned_data['password1'] + "\nSave for further reference.","shreyamule17@gmail.com",[new_user.email,"shreyamulay17@gmail.com"],fail_silently=False)
+            send_mail("Welcome to Liba Bakers!","Hi " + new_user.username + " — Thanks for signing up!  \nUsername :  " + form.cleaned_data['username'] + " \nPassword : " + form.cleaned_data['password1'] + "\nSave for further reference.","libabakers@gmail.com",[new_user.email,"libabakers@gmail.com"],fail_silently=False)
             
             login(req,new_user)
             return redirect('index')
@@ -85,7 +84,6 @@ def Contact_Page(req):
 def cart_add(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
-    print("::shreya",product)
     cart.add(product=product)
     return redirect("index")
 
@@ -110,7 +108,14 @@ def item_increment(request, id):
 def item_decrement(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
-    cart.decrement(product=product)
+    
+    product_id = str(product.id)
+    quantity = cart.cart.get(product_id, {}).get('quantity', 0)    
+    
+    if(quantity > 1):
+        cart.decrement(product=product)
+    elif quantity == 1:
+        cart.remove(product=product) 
     return redirect("cart_detail")
 
 
@@ -155,18 +160,16 @@ def Checkout(req):
     #     req.session['cart'] = {}
     #     return redirect('index')
 
-    # # return HttpResponse('shreyaaa')
+    # # return HttpResponse('')
     # return render(req,'checkout.html')
 
     amount_str = req.POST.get('amount')
     amount_float = float(amount_str)
     amount = int(amount_float)
 
-
-
     print("::amount",amount)
     payment = client.order.create({
-        "amount":amount,
+        "amount":amount * 100,
         "currency":"INR",
         "payment_capture":"1"
     })
@@ -271,11 +274,15 @@ def Place_Order(req):
         amount = req.POST.get('amount')
 
 
-        # print(order_id,payment,name,address,country,city,state,postcode,phone,email)
+        print("1234",name)
 
         context = {
             "order_id": order_id,
-            "paymentmode": paymentmode
+            "paymentmode": paymentmode,
+            "name": req.POST.get('name'),
+            "email": email,
+            "phone": phone,
+            "address": address
         }
 
         order = OrderNew(
@@ -295,6 +302,7 @@ def Place_Order(req):
         order.save()
 
         print("::paymentmode",paymentmode)
+        
         for i in cart:
             a=int(cart[i]['price'])
             b=int(cart[i]['quantity'])
@@ -310,15 +318,6 @@ def Place_Order(req):
                 total = total
             )
             item.save()
-        
-        print("::name",name)
-        print("::email",email)
-        print("::item",item)
-        print("::item.product",item.product)
-
-
-        # send_mail("Monginis Receipt","Thanks for buying, \n " +name,"shreyamule17@gmail.com",[email,"shreyamulay17@gmail.com"],fail_silently=False)
-
         return render(req,'placeorder.html',context)
 
 @csrf_exempt
@@ -335,7 +334,7 @@ def Success(req):
     p1 = []
     p2 = []
     p3 = []
-    p4 = []
+    p4=''
 
 
     for i in cart:
@@ -352,7 +351,7 @@ def Success(req):
         p1.append(item.product)
         p2.append(item.quantity)
         p3.append(item.price)
-        p4.append(item.total)
+        p4 = item.total
 
         
     proddata = p1
@@ -364,14 +363,14 @@ def Success(req):
     print("::proddata",proddata)
 
     # send html email
-    html_content = render_to_string("email_template.html",{'title':'Monginis Receipt','product':proddata,'quantity':quandata,'price':pricedata,'total':totaldata ,'name':temp.name})
+    html_content = render_to_string("email_template.html",{'title':'Liba Bakers Receipt','product':proddata,'quantity':quandata,'price':pricedata,'total':totaldata ,'name':temp.name})
 
     text_content = strip_tags(html_content)
     email1 = EmailMultiAlternatives(
-        "Monginis Receipt",
+        "Liba Bakers Receipt",
         text_content,
-        "shreyamule17@gmail.com",
-        ["shreyamule17@gmail.com",temp.email]
+        "libabakers@gmail.com",
+        ["libabakers@gmail.com",temp.email]
     )
     email1.attach_alternative(html_content, "text/html")
     email1.send()
@@ -398,4 +397,4 @@ def Success(req):
 
 def custom_logout(req):
     logout(req)
-    return HttpResponseRedirect(reverse('index'))
+    return redirect('/')

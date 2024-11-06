@@ -2,148 +2,188 @@
     {% extends 'master.html' %}
     {% block body %}
 
-    <form method="post" action="{% url 'place_order' %}">
+    <form method="post" action="{% url 'place_order' %}" id="order-form">
         {% csrf_token %}
-            <div class="checkout-area pt-100px pb-100px">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="billing-info-wrap">
-                                <h3 style="display: flex;
-                                align-items: center;
-                                justify-content: center;">Billing Details</h3>
-                                <!-- <div class="breadcrumbs">
-                                    <ol class="breadcrumb">
-                                      <li><a href="#">Home</a></li>
-                                      <li class="active">Billing Details</li>
-                                    </ol>
-                                </div> -->
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="billing-info mb-4">
-                                            <label>User Name</label>
-                                            <input type="text" name ="name" value="{{user.username}}" readonly class="disabled"/>
-                                            <input type="text" name ="order_id" value="{{order_id}}" hidden/>
-                                            <input type="text" name ="payment" value="{{payment}}" hidden/>
-
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-lg-6 col-md-6">
-                                        <div class="billing-info mb-4">
-                                            <label>Last Name</label>
-                                            <input type="text" />
-                                        </div>
-                                    </div> -->
-                                    
-                                    <div class="col-lg-12">
-                                        <div class="billing-select mb-4">
-                                            <label>Country</label>
-                                            <select name ="country">
-                                                <option>Select a country</option>
-                                                <option>India</option>
-                                                <option>Japan</option>
-                                                <option>Bahrain</option>
-                                                <option>Bangladesh</option>
-                                                <option>Barbados</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="billing-info mb-4">
-                                            <label>Street Address</label>
-                                            <input class="billing-address" placeholder="House number and street name" type="text" name ="address"/>
-                                            <input placeholder="Apartment, suite, unit etc." type="text" name ="address"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="billing-info mb-4">
-                                            <label>Town / City</label>
-                                            <input type="text" name ="city"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="billing-info mb-4">
-                                            <label>State</label>
-                                            <input type="text" name ="state"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="billing-info mb-4">
-                                            <label>Postcode / ZIP</label>
-                                            <input type="number" name ="postcode" maxlength="6"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="billing-info mb-4">
-                                            <label>Phone</label>
-                                            <input type="number" name ="phone" maxlength="10"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="billing-info mb-4">
-                                            <label>Email Address</label>
-                                            <input type="text" name ="email" value="{{user.email}}" readonly class="disabled"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="billing-select mb-4">
-                                            <label>Mode of Payment</label>
-                                            <select name ="paymentmode">
-                                                <option>Select a payment</option>
-                                                <option>Offline</option>
-                                                <option>Online</option>
-                                                
-                                            </select>
-                                        </div>
+        <div class="checkout-area pt-100px pb-100px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="billing-info-wrap">
+                            <h3 style="display: flex; align-items: center; justify-content: center;">Billing Details</h3>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-4">
+                                        <label>User Name</label>
+                                        <input type="text" name="name" value="{{user.username}}" readonly class="disabled" />
+                                        <input type="text" name="order_id" value="{{order_id}}" hidden />
+                                        <input type="text" name="payment" value="{{payment}}" hidden />
                                     </div>
                                 </div>
-                            
-                            
+                                <div class="col-lg-12">
+                                    <div class="billing-select mb-4">
+                                        <label>Country</label>
+                                        <select name="country" id="country">
+                                            <option value="">Select a country</option>
+                                            <option value="India">India</option>
+                                            <option value="Japan">Japan</option>
+                                            <option value="Bahrain">Bahrain</option>
+                                            <option value="Bangladesh">Bangladesh</option>
+                                            <option value="Barbados">Barbados</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 Place-order mt-25" style="display: flex; align-items: center; justify-content: center;">
+                                    <button type="button" class="btn btn-danger" onclick="getCurrentLocation()">My Location OR</button>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-4">
+                                        <label>Street Address</label>
+                                        <input class="billing-address" placeholder="House number and street name" type="text" name="address" id="address" />
+                                        <input placeholder="Apartment, suite, unit etc." type="text" name="address" id="address2" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-4">
+                                        <label>Town / City</label>
+                                        <input type="text" name="city" id="city" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-4">
+                                        <label>State</label>
+                                        <input type="text" name="state" id="state" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-4">
+                                        <label>Postcode / ZIP</label>
+                                        <input type="number" name="postcode" id="postcode" maxlength="6" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-4">
+                                        <label>Phone</label>
+                                        <input type="number" name="phone" maxlength="10" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-4">
+                                        <label>Email Address</label>
+                                        <input type="text" name="email" value="{{user.email}}" readonly class="disabled" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="billing-select mb-4">
+                                        <label>Mode of Payment</label>
+                                        <select name="paymentmode" id="paymentmode">
+                                            <option value="Offline">Offline</option>
+                                            <option value="Online">Online</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 mt-md-30px mt-lm-30px " style="margin-top: 30px;">
-                            <div class="your-order-area">
-                                <h3 style="display: flex;align-items: center;justify-content: center;">Your Order</h3>
-                                <div class="your-order-wrap gray-bg-4">
-                                    <div class="your-order-product-info">
-                                        <div class="your-order-top">
-                                            <ul>
-                                                <li>Product</li>
-                                                <li>Total</li>
-                                            </ul>
-                                        </div>
-                                        <div class="your-order-middle">
-                                            <ul>
-                                                {% for key,value in request.session.cart.items %}
-
-                                                    <li><span class="order-middle-left">{{value.name |truncatechars:20 }} X {{value.quantity}}</span> <span
-                                                    class="order-price">₹ {{ value.price }}</span></li>
-                                            
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                        <div class="your-order-bottom">
-                                            <ul>
-                                                <li class="your-order-shipping">Shipping</li>
-                                                <li>Free shipping</li>
-                                            </ul>
-                                        </div>
-                                        <div class="your-order-total">
-                                            <ul>
-                                                <li class="order-total">Total</li>
-                                                <li>₹ <input name = "amount" value="{{cart_total_amount}}" readonly class="disabled"></li>
-                                            </ul>
-                                        </div>
+                    </div>
+                    <div class="col-lg-5 mt-md-30px mt-lm-30px" style="margin-top: 30px;">
+                        <div class="your-order-area">
+                            <h3 style="display: flex; align-items: center; justify-content: center;">Your Order</h3>
+                            <div class="your-order-wrap gray-bg-4">
+                                <div class="your-order-product-info">
+                                    <div class="your-order-top">
+                                        <ul>
+                                            <li>Product</li>
+                                            <li>Total</li>
+                                        </ul>
+                                    </div>
+                                    <div class="your-order-middle">
+                                        <ul>
+                                            {% for key, value in request.session.cart.items %}
+                                            <li><span class="order-middle-left">{{value.name |truncatechars:20 }} X {{value.quantity}}</span> <span class="order-price">₹ {{ value.price }}</span></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="your-order-bottom">
+                                        <ul>
+                                            <li class="your-order-shipping">Shipping</li>
+                                            <li>Free shipping</li>
+                                        </ul>
+                                    </div>
+                                    <div class="your-order-total">
+                                        <ul>
+                                            <li class="order-total">Total</li>
+                                            <li>₹ <input name="amount" value="{{cart_total_amount}}" readonly class="disabled"></li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <div class="Place-order mt-25" style="display: flex;align-items: center;justify-content: center;">
-                                    <button type="submit" class="btn btn-primary" style="width: 25%;">Continue</button>
-                                </div>
+                            </div>
+                            <div class="Place-order mt-25" style="display: flex; align-items: center; justify-content: center;">
+                                <button type="submit" id="continue-button" class="btn btn-primary" style="width: 25%;" disabled>Continue</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </form>
+    
 
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('order-form');
+        const continueButton = document.getElementById('continue-button');
+
+        function checkFormValidity() {
+            const address = document.getElementById('address').value.trim();
+            const address2 = document.getElementById('address2').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const postcode = document.getElementById('postcode').value.trim();
+            const phone = document.querySelector('input[name="phone"]').value.trim();
+            const paymentmode = document.getElementById('paymentmode').value.trim();
+            const country = document.getElementById('country').value.trim();
+
+            const isValid = address !== '' && city !== '' && state !== '' && postcode !== '' && phone !== '' && paymentmode !== '' && country !== '';
+            continueButton.disabled = !isValid;
+        }
+
+        form.addEventListener('input', checkFormValidity);
+        form.addEventListener('change', checkFormValidity);
+    });
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+        function showPosition(position) 
+        {
+        // console.log("position",position)
+
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
+            .then(response => {
+                console.log('Response:', response);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Geocoding Data:', data);
+
+                document.getElementById('address').value = data.address.suburb + ", "+ data.display_name || '';
+                document.getElementById('city').value = data.address.city || data.address.town || data.address.village || '';
+                document.getElementById('state').value = data.address.state || '';
+                document.getElementById('postcode').value = data.address.postcode || '';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to retrieve location details.');
+            });
+}
+
+    </script>
     {% endblock %}

@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from .import views
-# from django.contrib.auth import views as auth_views
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -64,6 +64,6 @@ urlpatterns = [
     path('success',views.Success,name="success"),
 
     # path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
-    path('accounts/login/', views.custom_logout, name='logout'),
+    path('accounts/logout/', views.custom_logout, name='logout'),
 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
